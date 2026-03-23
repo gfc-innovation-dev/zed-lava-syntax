@@ -1,0 +1,159 @@
+==================
+Assign tag
+==================
+
+{% assign name = 'Ted' %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (variable_lookup
+      (variable))
+    (assignment_operator)
+    (string
+      (string_single))
+    (tag_end))
+  (content))
+
+==================
+If tag
+==================
+
+{% if CurrentPerson.NickName == 'Ted' %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (variable_lookup
+      (builtin_variable)
+      (property_accessor)
+      (member_access))
+    (operator)
+    (string
+      (string_single))
+    (tag_end))
+  (content))
+
+==================
+Endif tag
+==================
+
+{% endif %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (tag_end))
+  (content))
+
+==================
+For tag
+==================
+
+{% for item in Items %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (variable_lookup
+      (builtin_variable))
+    (word_operator)
+    (variable_lookup
+      (builtin_variable))
+    (tag_end))
+  (content))
+
+==================
+Else tag
+==================
+
+{% else %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (tag_end))
+  (content))
+
+==================
+Tag with whitespace trim
+==================
+
+{%- if true -%}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (boolean)
+    (tag_end))
+  (content))
+
+==================
+Entity command tag
+==================
+
+{% person where:'LastName == "Decker"' %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (tag_parameters
+      (parameter
+        (attribute_name)
+        (string
+          (string_single))))
+    (tag_end))
+  (content))
+
+==================
+Cache tag with parameters
+==================
+
+{% cache key:'my-cache' duration:'3600' %}
+
+---
+
+(source_file
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (tag_parameters
+      (parameter
+        (attribute_name)
+        (string
+          (string_single)))
+      (parameter
+        (attribute_name)
+        (string
+          (string_single))))
+    (tag_end))
+  (content))

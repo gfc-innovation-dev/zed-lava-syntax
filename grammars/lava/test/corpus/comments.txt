@@ -1,0 +1,41 @@
+==================
+Block comment
+==================
+
+{% comment %}This is hidden{% endcomment %}
+
+---
+
+(source_file
+  (content)
+  (comment_block
+    (tag_name)
+    (comment_content)
+    (tag_name))
+  (content))
+
+==================
+Line comment
+==================
+
+//- This is a line comment
+
+---
+
+(source_file
+  (content)
+  (line_comment)
+  (content))
+
+==================
+Alt block comment
+==================
+
+/- This is a block comment -/
+
+---
+
+(source_file
+  (content)
+  (block_comment_alt)
+  (content))

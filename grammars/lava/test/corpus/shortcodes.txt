@@ -1,0 +1,41 @@
+==================
+Simple shortcode
+==================
+
+{[ parallax image:'hero.jpg' ]}
+
+---
+
+(source_file
+  (content)
+  (shortcode
+    (shortcode_begin)
+    (shortcode_name)
+    (tag_parameters
+      (parameter
+        (attribute_name)
+        (string
+          (string_single))))
+    (shortcode_end))
+  (content))
+
+==================
+Shortcode item
+==================
+
+[[ item title:'Small Groups' ]]
+
+---
+
+(source_file
+  (content)
+  (shortcode_item
+    (shortcode_item_begin)
+    (shortcode_item_name)
+    (tag_parameters
+      (parameter
+        (attribute_name)
+        (string
+          (string_single))))
+    (shortcode_item_end))
+  (content))

@@ -1,0 +1,64 @@
+==================
+Raw block
+==================
+
+{% raw %}{{ not parsed }}{% endraw %}
+
+---
+
+(source_file
+  (content)
+  (raw_block
+    (tag_name)
+    (raw_content)
+    (tag_name))
+  (content))
+
+==================
+Content between tags
+==================
+
+<div>{{ name }}</div>
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (variable_lookup
+      (variable))
+    (object_end))
+  (content))
+
+==================
+Mixed content and Lava
+==================
+
+<h1>{{ title }}</h1>
+{% if show %}
+  <p>Hello</p>
+{% endif %}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (variable_lookup
+      (variable))
+    (object_end))
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (variable_lookup
+      (variable))
+    (tag_end))
+  (content)
+  (tag
+    (tag_begin)
+    (tag_name)
+    (tag_end))
+  (content))

@@ -1,0 +1,13 @@
+id = "zed-lava-syntax"
+name = "RockRMS Lava Syntax"
+version = "0.0.1"
+schema_version = 1
+authors = ["Grace Family Church <rockdev@gfcflorida.com>"]
+description = "RockRMS Lava language support for Zed — syntax highlighting, bracket matching, and snippets."
+repository = "https://github.com/gfc-innovation-dev/zed-lava-syntax"
+
+[grammars.lava]
+repository = "https://github.com/gfc-innovation-dev/tree-sitter-rockrms-lava"
+rev = "main"
+
+snippets = ["./snippets/lava.json"]

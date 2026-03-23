@@ -1,0 +1,134 @@
+==================
+Simple object output
+==================
+
+{{ CurrentPerson.NickName }}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (variable_lookup
+      (builtin_variable)
+      (property_accessor)
+      (member_access))
+    (object_end))
+  (content))
+
+==================
+Object with filter
+==================
+
+{{ CurrentPerson.NickName | Upcase }}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (variable_lookup
+      (builtin_variable)
+      (property_accessor)
+      (member_access))
+    (filter
+      (pipe)
+      (filter_name))
+    (object_end))
+  (content))
+
+==================
+Object with chained filters
+==================
+
+{{ 'hello world' | Upcase | Truncate }}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (string
+      (string_single))
+    (filter
+      (pipe)
+      (filter_name))
+    (filter
+      (pipe)
+      (filter_name))
+    (object_end))
+  (content))
+
+==================
+Object with whitespace trim
+==================
+
+{{- name -}}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (variable_lookup
+      (variable))
+    (object_end))
+  (content))
+
+==================
+Object with number
+==================
+
+{{ 42 }}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (number)
+    (object_end))
+  (content))
+
+==================
+Object with string
+==================
+
+{{ 'Hello' }}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (string
+      (string_single))
+    (object_end))
+  (content))
+
+==================
+Object with filter and arguments
+==================
+
+{{ 'Now' | Date:'yyyy-MM-dd' }}
+
+---
+
+(source_file
+  (content)
+  (object
+    (object_begin)
+    (quoted_support)
+    (filter
+      (pipe)
+      (filter_name)
+      (string
+        (string_single)))
+    (object_end))
+  (content))

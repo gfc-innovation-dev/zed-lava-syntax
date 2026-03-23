@@ -1,0 +1,2290 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
+  "name": "lava",
+  "rules": {
+    "source_file": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "_node"
+      }
+    },
+    "_node": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "comment_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "line_comment"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "block_comment_alt"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "frontmatter"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "raw_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "javascript_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "stylesheet_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "sql_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "csharp_block"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "object"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "tag"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "shortcode"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "shortcode_item"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "content"
+        }
+      ]
+    },
+    "content": {
+      "type": "SYMBOL",
+      "name": "_content"
+    },
+    "comment_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "comment"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_comment_content"
+              },
+              "named": true,
+              "value": "comment_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endcomment"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "line_comment": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "//-"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[^\\n]*"
+          }
+        ]
+      }
+    },
+    "block_comment_alt": {
+      "type": "TOKEN",
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "/-"
+          },
+          {
+            "type": "PATTERN",
+            "value": "[\\s\\S]*?"
+          },
+          {
+            "type": "STRING",
+            "value": "-/"
+          }
+        ]
+      }
+    },
+    "frontmatter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "comment"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "STRING",
+          "value": "---"
+        },
+        {
+          "type": "FIELD",
+          "name": "content",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_comment_content"
+            },
+            "named": true,
+            "value": "frontmatter_content"
+          }
+        },
+        {
+          "type": "STRING",
+          "value": "---"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endcomment"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "raw_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "raw"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "ALIAS",
+              "content": {
+                "type": "SYMBOL",
+                "name": "_raw_content"
+              },
+              "named": true,
+              "value": "raw_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endraw"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "javascript_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "javascript"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "FIELD",
+          "name": "content",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_block_content"
+            },
+            "named": true,
+            "value": "block_content"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endjavascript"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "stylesheet_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "stylesheet"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "FIELD",
+          "name": "content",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_block_content"
+            },
+            "named": true,
+            "value": "block_content"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endstylesheet"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "sql_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "sql"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "FIELD",
+          "name": "content",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_block_content"
+            },
+            "named": true,
+            "value": "block_content"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endsql"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "csharp_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "execute"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        },
+        {
+          "type": "FIELD",
+          "name": "content",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_block_content"
+            },
+            "named": true,
+            "value": "block_content"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_open"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "endexecute"
+          },
+          "named": true,
+          "value": "tag_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_tag_close"
+        }
+      ]
+    },
+    "object": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "open",
+          "content": {
+            "type": "SYMBOL",
+            "name": "object_begin"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_expression"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "close",
+          "content": {
+            "type": "SYMBOL",
+            "name": "object_end"
+          }
+        }
+      ]
+    },
+    "object_begin": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "{{"
+          },
+          {
+            "type": "STRING",
+            "value": "{{-"
+          }
+        ]
+      }
+    },
+    "object_end": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "}}"
+          },
+          {
+            "type": "STRING",
+            "value": "-}}"
+          }
+        ]
+      }
+    },
+    "tag": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "open",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_tag_open"
+            },
+            "named": true,
+            "value": "tag_begin"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "FIELD",
+              "name": "name",
+              "content": {
+                "type": "SYMBOL",
+                "name": "tag_name"
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_expression"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "close",
+          "content": {
+            "type": "ALIAS",
+            "content": {
+              "type": "SYMBOL",
+              "name": "_tag_close"
+            },
+            "named": true,
+            "value": "tag_end"
+          }
+        }
+      ]
+    },
+    "tag_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z_]\\w*"
+    },
+    "_tag_open": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "{%"
+          },
+          {
+            "type": "STRING",
+            "value": "{%-"
+          }
+        ]
+      }
+    },
+    "_tag_close": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "%}"
+          },
+          {
+            "type": "STRING",
+            "value": "-%}"
+          }
+        ]
+      }
+    },
+    "tag_parameters": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "SYMBOL",
+        "name": "parameter"
+      }
+    },
+    "parameter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "attribute_name"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "value",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_value"
+          }
+        }
+      ]
+    },
+    "attribute_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z_]\\w*:"
+    },
+    "shortcode": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "open",
+          "content": {
+            "type": "SYMBOL",
+            "name": "shortcode_begin"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "shortcode_name"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "close",
+          "content": {
+            "type": "SYMBOL",
+            "name": "shortcode_end"
+          }
+        }
+      ]
+    },
+    "shortcode_begin": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "{["
+      }
+    },
+    "shortcode_end": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "]}"
+      }
+    },
+    "shortcode_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z_]\\w*"
+    },
+    "shortcode_item": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "open",
+          "content": {
+            "type": "SYMBOL",
+            "name": "shortcode_item_begin"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "shortcode_item_name"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "tag_parameters"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "FIELD",
+          "name": "close",
+          "content": {
+            "type": "SYMBOL",
+            "name": "shortcode_item_end"
+          }
+        }
+      ]
+    },
+    "shortcode_item_begin": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "[["
+      }
+    },
+    "shortcode_item_end": {
+      "type": "TOKEN",
+      "content": {
+        "type": "STRING",
+        "value": "]]"
+      }
+    },
+    "shortcode_item_name": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z_]\\w*"
+    },
+    "_expression": {
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "filter"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_value"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "operator"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "word_operator"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "assignment_operator"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "range"
+          }
+        ]
+      }
+    },
+    "filter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "FIELD",
+          "name": "pipe",
+          "content": {
+            "type": "SYMBOL",
+            "name": "pipe"
+          }
+        },
+        {
+          "type": "FIELD",
+          "name": "name",
+          "content": {
+            "type": "SYMBOL",
+            "name": "filter_name"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ":"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_filter_arguments"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "pipe": {
+      "type": "STRING",
+      "value": "|"
+    },
+    "filter_name": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "ToBase64"
+          },
+          {
+            "type": "STRING",
+            "value": "AppendSegments"
+          },
+          {
+            "type": "STRING",
+            "value": "EscapeOnce"
+          },
+          {
+            "type": "STRING",
+            "value": "Concat"
+          },
+          {
+            "type": "STRING",
+            "value": "Compact"
+          },
+          {
+            "type": "STRING",
+            "value": "Abs"
+          },
+          {
+            "type": "STRING",
+            "value": "AppendWatches"
+          },
+          {
+            "type": "STRING",
+            "value": "AddToMergeFields"
+          },
+          {
+            "type": "STRING",
+            "value": "NearestCampus"
+          },
+          {
+            "type": "STRING",
+            "value": "Round"
+          },
+          {
+            "type": "STRING",
+            "value": "FromIdHash"
+          },
+          {
+            "type": "STRING",
+            "value": "UrlDecode"
+          },
+          {
+            "type": "STRING",
+            "value": "UrlEncode"
+          },
+          {
+            "type": "STRING",
+            "value": "AsGuid"
+          },
+          {
+            "type": "STRING",
+            "value": "Encrypt"
+          },
+          {
+            "type": "STRING",
+            "value": "CreateEntitySet"
+          },
+          {
+            "type": "STRING",
+            "value": "GuidToId"
+          },
+          {
+            "type": "STRING",
+            "value": "RenderStructuredContentAsHtml"
+          },
+          {
+            "type": "STRING",
+            "value": "DateRangeFromSlidingFormat"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonByPersonAlternateId"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonImpersonationToken"
+          },
+          {
+            "type": "STRING",
+            "value": "LastAttendedGroupOfType"
+          },
+          {
+            "type": "STRING",
+            "value": "GeofencingGroupMembers"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonActionIdentifier"
+          },
+          {
+            "type": "STRING",
+            "value": "EntityFromCachedObject"
+          },
+          {
+            "type": "STRING",
+            "value": "NumberToRomanNumerals"
+          },
+          {
+            "type": "STRING",
+            "value": "AllKeysFromDictionary"
+          },
+          {
+            "type": "STRING",
+            "value": "PluralizeForQuantity"
+          },
+          {
+            "type": "STRING",
+            "value": "NumberToOrdinalWords"
+          },
+          {
+            "type": "STRING",
+            "value": "DeleteUserPreference"
+          },
+          {
+            "type": "STRING",
+            "value": "GetPersonAlternateId"
+          },
+          {
+            "type": "STRING",
+            "value": "RemoveFromDictionary"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonalizationItems"
+          },
+          {
+            "type": "STRING",
+            "value": "UnescapeDataString"
+          },
+          {
+            "type": "STRING",
+            "value": "PropertyToKeyValue"
+          },
+          {
+            "type": "STRING",
+            "value": "RockInstanceConfig"
+          },
+          {
+            "type": "STRING",
+            "value": "GetUserPreference"
+          },
+          {
+            "type": "STRING",
+            "value": "HasSignedDocument"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonByAliasGuid"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonTokenCreate"
+          },
+          {
+            "type": "STRING",
+            "value": "SetUserPreference"
+          },
+          {
+            "type": "STRING",
+            "value": "AddResponseHeader"
+          },
+          {
+            "type": "STRING",
+            "value": "EscapeDataString"
+          },
+          {
+            "type": "STRING",
+            "value": "RegExMatchValues"
+          },
+          {
+            "type": "STRING",
+            "value": "HumanizeDateTime"
+          },
+          {
+            "type": "STRING",
+            "value": "HumanizeTimeSpan"
+          },
+          {
+            "type": "STRING",
+            "value": "NextDayOfTheWeek"
+          },
+          {
+            "type": "STRING",
+            "value": "FormatAsCurrency"
+          },
+          {
+            "type": "STRING",
+            "value": "FamilySalutation"
+          },
+          {
+            "type": "STRING",
+            "value": "GeofencingGroups"
+          },
+          {
+            "type": "STRING",
+            "value": "AddLinkTagToHead"
+          },
+          {
+            "type": "STRING",
+            "value": "AddMetaTagToHead"
+          },
+          {
+            "type": "STRING",
+            "value": "PersistedDataset"
+          },
+          {
+            "type": "STRING",
+            "value": "FilterUnfollowed"
+          },
+          {
+            "type": "STRING",
+            "value": "UniqueIdentifier"
+          },
+          {
+            "type": "STRING",
+            "value": "IsInSecurityRole"
+          },
+          {
+            "type": "STRING",
+            "value": "AppendFollowing"
+          },
+          {
+            "type": "STRING",
+            "value": "RegExMatchValue"
+          },
+          {
+            "type": "STRING",
+            "value": "NumberToOrdinal"
+          },
+          {
+            "type": "STRING",
+            "value": "SortByAttribute"
+          },
+          {
+            "type": "STRING",
+            "value": "HeadOfHousehold"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonByAliasId"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonTokenRead"
+          },
+          {
+            "type": "STRING",
+            "value": "SetUrlParameter"
+          },
+          {
+            "type": "STRING",
+            "value": "CreateShortLink"
+          },
+          {
+            "type": "STRING",
+            "value": "RemoveFromArray"
+          },
+          {
+            "type": "STRING",
+            "value": "AddToDictionary"
+          },
+          {
+            "type": "STRING",
+            "value": "ObfuscateEmail"
+          },
+          {
+            "type": "STRING",
+            "value": "GroupsAttended"
+          },
+          {
+            "type": "STRING",
+            "value": "ResolveRockUrl"
+          },
+          {
+            "type": "STRING",
+            "value": "FilterFollowed"
+          },
+          {
+            "type": "STRING",
+            "value": "AddQuickReturn"
+          },
+          {
+            "type": "STRING",
+            "value": "StripNewlines"
+          },
+          {
+            "type": "STRING",
+            "value": "TruncateWords"
+          },
+          {
+            "type": "STRING",
+            "value": "DatesFromICal"
+          },
+          {
+            "type": "STRING",
+            "value": "NumberToWords"
+          },
+          {
+            "type": "STRING",
+            "value": "PageParameter"
+          },
+          {
+            "type": "STRING",
+            "value": "AddScriptLink"
+          },
+          {
+            "type": "STRING",
+            "value": "TriumphImgCdn"
+          },
+          {
+            "type": "STRING",
+            "value": "IsDateBetween"
+          },
+          {
+            "type": "STRING",
+            "value": "AsDateTimeUtc"
+          },
+          {
+            "type": "STRING",
+            "value": "FromMarkdown"
+          },
+          {
+            "type": "STRING",
+            "value": "ReplaceFirst"
+          },
+          {
+            "type": "STRING",
+            "value": "SentenceCase"
+          },
+          {
+            "type": "STRING",
+            "value": "WithFallback"
+          },
+          {
+            "type": "STRING",
+            "value": "NearestGroup"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonByGuid"
+          },
+          {
+            "type": "STRING",
+            "value": "SetPageTitle"
+          },
+          {
+            "type": "STRING",
+            "value": "PageRedirect"
+          },
+          {
+            "type": "STRING",
+            "value": "Base64Encode"
+          },
+          {
+            "type": "STRING",
+            "value": "RegExReplace"
+          },
+          {
+            "type": "STRING",
+            "value": "RandomNumber"
+          },
+          {
+            "type": "STRING",
+            "value": "IsInDataView"
+          },
+          {
+            "type": "STRING",
+            "value": "NewlineToBr"
+          },
+          {
+            "type": "STRING",
+            "value": "ReplaceLast"
+          },
+          {
+            "type": "STRING",
+            "value": "SanitizeSql"
+          },
+          {
+            "type": "STRING",
+            "value": "Singularize"
+          },
+          {
+            "type": "STRING",
+            "value": "DaysFromNow"
+          },
+          {
+            "type": "STRING",
+            "value": "DaysInMonth"
+          },
+          {
+            "type": "STRING",
+            "value": "PhoneNumber"
+          },
+          {
+            "type": "STRING",
+            "value": "HasRightsTo"
+          },
+          {
+            "type": "STRING",
+            "value": "GroupByGuid"
+          },
+          {
+            "type": "STRING",
+            "value": "WriteCookie"
+          },
+          {
+            "type": "STRING",
+            "value": "RemoveFirst"
+          },
+          {
+            "type": "STRING",
+            "value": "Capitalize"
+          },
+          {
+            "type": "STRING",
+            "value": "HtmlDecode"
+          },
+          {
+            "type": "STRING",
+            "value": "Possessive"
+          },
+          {
+            "type": "STRING",
+            "value": "RegExMatch"
+          },
+          {
+            "type": "STRING",
+            "value": "ToCssClass"
+          },
+          {
+            "type": "STRING",
+            "value": "SundayDate"
+          },
+          {
+            "type": "STRING",
+            "value": "ToMidnight"
+          },
+          {
+            "type": "STRING",
+            "value": "ToQuantity"
+          },
+          {
+            "type": "STRING",
+            "value": "Desaturate"
+          },
+          {
+            "type": "STRING",
+            "value": "PersonById"
+          },
+          {
+            "type": "STRING",
+            "value": "ZebraPhoto"
+          },
+          {
+            "type": "STRING",
+            "value": "AsDateTime"
+          },
+          {
+            "type": "STRING",
+            "value": "AddCssLink"
+          },
+          {
+            "type": "STRING",
+            "value": "HmacSha256"
+          },
+          {
+            "type": "STRING",
+            "value": "AddToArray"
+          },
+          {
+            "type": "STRING",
+            "value": "FromBase64"
+          },
+          {
+            "type": "STRING",
+            "value": "IsFollowed"
+          },
+          {
+            "type": "STRING",
+            "value": "ReadCookie"
+          },
+          {
+            "type": "STRING",
+            "value": "AddSegment"
+          },
+          {
+            "type": "STRING",
+            "value": "Pluralize"
+          },
+          {
+            "type": "STRING",
+            "value": "StripHtml"
+          },
+          {
+            "type": "STRING",
+            "value": "TitleCase"
+          },
+          {
+            "type": "STRING",
+            "value": "TrimStart"
+          },
+          {
+            "type": "STRING",
+            "value": "DaysSince"
+          },
+          {
+            "type": "STRING",
+            "value": "DaysUntil"
+          },
+          {
+            "type": "STRING",
+            "value": "DividedBy"
+          },
+          {
+            "type": "STRING",
+            "value": "AdjustHue"
+          },
+          {
+            "type": "STRING",
+            "value": "Grayscale"
+          },
+          {
+            "type": "STRING",
+            "value": "Attribute"
+          },
+          {
+            "type": "STRING",
+            "value": "PageRoute"
+          },
+          {
+            "type": "STRING",
+            "value": "FromCache"
+          },
+          {
+            "type": "STRING",
+            "value": "AsBoolean"
+          },
+          {
+            "type": "STRING",
+            "value": "AsInteger"
+          },
+          {
+            "type": "STRING",
+            "value": "AsDecimal"
+          },
+          {
+            "type": "STRING",
+            "value": "GroupById"
+          },
+          {
+            "type": "STRING",
+            "value": "TimeOfDay"
+          },
+          {
+            "type": "STRING",
+            "value": "Downcase"
+          },
+          {
+            "type": "STRING",
+            "value": "ReadTime"
+          },
+          {
+            "type": "STRING",
+            "value": "ToPascal"
+          },
+          {
+            "type": "STRING",
+            "value": "Truncate"
+          },
+          {
+            "type": "STRING",
+            "value": "DateDiff"
+          },
+          {
+            "type": "STRING",
+            "value": "Humanize"
+          },
+          {
+            "type": "STRING",
+            "value": "ToString"
+          },
+          {
+            "type": "STRING",
+            "value": "Saturate"
+          },
+          {
+            "type": "STRING",
+            "value": "Contains"
+          },
+          {
+            "type": "STRING",
+            "value": "Children"
+          },
+          {
+            "type": "STRING",
+            "value": "Postback"
+          },
+          {
+            "type": "STRING",
+            "value": "Property"
+          },
+          {
+            "type": "STRING",
+            "value": "AsDouble"
+          },
+          {
+            "type": "STRING",
+            "value": "AsString"
+          },
+          {
+            "type": "STRING",
+            "value": "HmacSha1"
+          },
+          {
+            "type": "STRING",
+            "value": "XamlWrap"
+          },
+          {
+            "type": "STRING",
+            "value": "FromJSON"
+          },
+          {
+            "type": "STRING",
+            "value": "Distinct"
+          },
+          {
+            "type": "STRING",
+            "value": "ImageUrl"
+          },
+          {
+            "type": "STRING",
+            "value": "Decrypt"
+          },
+          {
+            "type": "STRING",
+            "value": "Default"
+          },
+          {
+            "type": "STRING",
+            "value": "Linkify"
+          },
+          {
+            "type": "STRING",
+            "value": "Prepend"
+          },
+          {
+            "type": "STRING",
+            "value": "Replace"
+          },
+          {
+            "type": "STRING",
+            "value": "TrimEnd"
+          },
+          {
+            "type": "STRING",
+            "value": "DateAdd"
+          },
+          {
+            "type": "STRING",
+            "value": "AtLeast"
+          },
+          {
+            "type": "STRING",
+            "value": "Ceiling"
+          },
+          {
+            "type": "STRING",
+            "value": "Lighten"
+          },
+          {
+            "type": "STRING",
+            "value": "FadeOut"
+          },
+          {
+            "type": "STRING",
+            "value": "OrderBy"
+          },
+          {
+            "type": "STRING",
+            "value": "Shuffle"
+          },
+          {
+            "type": "STRING",
+            "value": "Address"
+          },
+          {
+            "type": "STRING",
+            "value": "Parents"
+          },
+          {
+            "type": "STRING",
+            "value": "GroupBy"
+          },
+          {
+            "type": "STRING",
+            "value": "RunLava"
+          },
+          {
+            "type": "STRING",
+            "value": "Reverse"
+          },
+          {
+            "type": "STRING",
+            "value": "Append"
+          },
+          {
+            "type": "STRING",
+            "value": "Escape"
+          },
+          {
+            "type": "STRING",
+            "value": "Upcase"
+          },
+          {
+            "type": "STRING",
+            "value": "AtMost"
+          },
+          {
+            "type": "STRING",
+            "value": "Format"
+          },
+          {
+            "type": "STRING",
+            "value": "Modulo"
+          },
+          {
+            "type": "STRING",
+            "value": "Darken"
+          },
+          {
+            "type": "STRING",
+            "value": "FadeIn"
+          },
+          {
+            "type": "STRING",
+            "value": "Select"
+          },
+          {
+            "type": "STRING",
+            "value": "Campus"
+          },
+          {
+            "type": "STRING",
+            "value": "Spouse"
+          },
+          {
+            "type": "STRING",
+            "value": "Client"
+          },
+          {
+            "type": "STRING",
+            "value": "Base64"
+          },
+          {
+            "type": "STRING",
+            "value": "Sha256"
+          },
+          {
+            "type": "STRING",
+            "value": "ToJSON"
+          },
+          {
+            "type": "STRING",
+            "value": "Remove"
+          },
+          {
+            "type": "STRING",
+            "value": "Groups"
+          },
+          {
+            "type": "STRING",
+            "value": "First"
+          },
+          {
+            "type": "STRING",
+            "value": "Right"
+          },
+          {
+            "type": "STRING",
+            "value": "Slice"
+          },
+          {
+            "type": "STRING",
+            "value": "Split"
+          },
+          {
+            "type": "STRING",
+            "value": "Floor"
+          },
+          {
+            "type": "STRING",
+            "value": "Minus"
+          },
+          {
+            "type": "STRING",
+            "value": "Times"
+          },
+          {
+            "type": "STRING",
+            "value": "Shade"
+          },
+          {
+            "type": "STRING",
+            "value": "Where"
+          },
+          {
+            "type": "STRING",
+            "value": "Notes"
+          },
+          {
+            "type": "STRING",
+            "value": "Debug"
+          },
+          {
+            "type": "STRING",
+            "value": "Index"
+          },
+          {
+            "type": "STRING",
+            "value": "Steps"
+          },
+          {
+            "type": "STRING",
+            "value": "Group"
+          },
+          {
+            "type": "STRING",
+            "value": "Last"
+          },
+          {
+            "type": "STRING",
+            "value": "Size"
+          },
+          {
+            "type": "STRING",
+            "value": "Trim"
+          },
+          {
+            "type": "STRING",
+            "value": "Date"
+          },
+          {
+            "type": "STRING",
+            "value": "Plus"
+          },
+          {
+            "type": "STRING",
+            "value": "Tint"
+          },
+          {
+            "type": "STRING",
+            "value": "Join"
+          },
+          {
+            "type": "STRING",
+            "value": "Sort"
+          },
+          {
+            "type": "STRING",
+            "value": "Page"
+          },
+          {
+            "type": "STRING",
+            "value": "Sha1"
+          },
+          {
+            "type": "STRING",
+            "value": "Uniq"
+          },
+          {
+            "type": "STRING",
+            "value": "Mix"
+          },
+          {
+            "type": "STRING",
+            "value": "Map"
+          },
+          {
+            "type": "STRING",
+            "value": "Url"
+          },
+          {
+            "type": "STRING",
+            "value": "Md5"
+          },
+          {
+            "type": "STRING",
+            "value": "Sum"
+          }
+        ]
+      }
+    },
+    "_filter_arguments": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_value"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "STRING",
+                "value": ","
+              },
+              {
+                "type": "SYMBOL",
+                "name": "_value"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "_value": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "string"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "number"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "boolean"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "nil"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "blank"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "empty"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "quoted_support"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "variable_lookup"
+        }
+      ]
+    },
+    "string": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "string_single"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "string_double"
+        }
+      ]
+    },
+    "string_single": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "'"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^']*"
+        },
+        {
+          "type": "STRING",
+          "value": "'"
+        }
+      ]
+    },
+    "string_double": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\""
+        },
+        {
+          "type": "PATTERN",
+          "value": "[^\"]*"
+        },
+        {
+          "type": "STRING",
+          "value": "\""
+        }
+      ]
+    },
+    "number": {
+      "type": "PATTERN",
+      "value": "(-|\\+)?\\s*[0-9]+(\\.[0-9]+)?"
+    },
+    "boolean": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "true"
+        },
+        {
+          "type": "STRING",
+          "value": "false"
+        }
+      ]
+    },
+    "nil": {
+      "type": "STRING",
+      "value": "nil"
+    },
+    "blank": {
+      "type": "STRING",
+      "value": "blank"
+    },
+    "empty": {
+      "type": "STRING",
+      "value": "empty"
+    },
+    "quoted_support": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "'Now'"
+        },
+        {
+          "type": "STRING",
+          "value": "'Global'"
+        },
+        {
+          "type": "STRING",
+          "value": "'Lava'"
+        }
+      ]
+    },
+    "variable_lookup": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "builtin_variable"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "variable"
+            }
+          ]
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SEQ",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "property_accessor"
+              },
+              {
+                "type": "SYMBOL",
+                "name": "member_access"
+              }
+            ]
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "index_access"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "builtin_variable": {
+      "type": "TOKEN",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "STRING",
+            "value": "CurrentPerson"
+          },
+          {
+            "type": "STRING",
+            "value": "Context"
+          },
+          {
+            "type": "STRING",
+            "value": "Campuses"
+          },
+          {
+            "type": "STRING",
+            "value": "PageParameter"
+          },
+          {
+            "type": "STRING",
+            "value": "CurrentPage"
+          },
+          {
+            "type": "STRING",
+            "value": "Person"
+          },
+          {
+            "type": "STRING",
+            "value": "CurrentBrowser"
+          },
+          {
+            "type": "STRING",
+            "value": "forloop"
+          },
+          {
+            "type": "STRING",
+            "value": "Item"
+          },
+          {
+            "type": "STRING",
+            "value": "item"
+          },
+          {
+            "type": "STRING",
+            "value": "Items"
+          }
+        ]
+      }
+    },
+    "variable": {
+      "type": "PATTERN",
+      "value": "[a-zA-Z_][\\w-]*"
+    },
+    "member_access": {
+      "type": "PATTERN",
+      "value": "[\\w][\\w?-]*"
+    },
+    "property_accessor": {
+      "type": "STRING",
+      "value": "."
+    },
+    "index_access": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "["
+          },
+          "named": true,
+          "value": "index_access_begin"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "string"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "number"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "variable"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": "]"
+          },
+          "named": true,
+          "value": "index_access_end"
+        }
+      ]
+    },
+    "operator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "=="
+        },
+        {
+          "type": "STRING",
+          "value": "!="
+        },
+        {
+          "type": "STRING",
+          "value": ">"
+        },
+        {
+          "type": "STRING",
+          "value": "<"
+        },
+        {
+          "type": "STRING",
+          "value": ">="
+        },
+        {
+          "type": "STRING",
+          "value": "<="
+        }
+      ]
+    },
+    "word_operator": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "and"
+        },
+        {
+          "type": "STRING",
+          "value": "or"
+        },
+        {
+          "type": "STRING",
+          "value": "contains"
+        },
+        {
+          "type": "STRING",
+          "value": "in"
+        },
+        {
+          "type": "STRING",
+          "value": "reversed"
+        }
+      ]
+    },
+    "assignment_operator": {
+      "type": "STRING",
+      "value": "="
+    },
+    "range": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "("
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "number"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "variable"
+            }
+          ]
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "STRING",
+            "value": ".."
+          },
+          "named": true,
+          "value": "range_operator"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "number"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "variable"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": ")"
+        }
+      ]
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [
+    {
+      "type": "SYMBOL",
+      "name": "_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_block_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_raw_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_comment_content"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "error_sentinel"
+    }
+  ],
+  "inline": [],
+  "supertypes": [],
+  "reserved": {}
+}

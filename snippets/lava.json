@@ -1,0 +1,201 @@
+{
+  "get_img": {
+    "prefix": "get_img",
+    "description": "Rock GetImage.ashx tag with Guid or Id",
+    "body": [
+      "<img src=\"/GetImage.ashx?${1|Guid,Id|}={{ ${2:${3:item}${4: | Attribute:'${5:Image}'}} }}\" class=\"${6:img-responsive}\" alt=\"${7}\">"
+    ]
+  },
+  "get_img_full": {
+    "prefix": "get_img_wh",
+    "description": "Rock GetImage.ashx tag with width and height",
+    "body": [
+      "<img src=\"/GetImage.ashx?${1|Guid,Id|}={{ ${2:${3:item}${4: | Attribute:'${5:Image}'}} }}&w=${6:200}&h=${7:200}\" class=\"${8:img-responsive}\" alt=\"${9}\">"
+    ]
+  },
+  "get_communication": {
+    "prefix": "get_communication",
+    "description": "Rock GetCommunication.ashx URL",
+    "body": [
+      "/GetCommunication.ashx?c={{ ${1:communicationGuid} }}&p={{ ${2:CurrentPerson.${3:UrlEncodedKey}} }}"
+    ]
+  },
+  "get_file": {
+    "prefix": "get_file",
+    "description": "Rock GetFile.ashx URL",
+    "body": [
+      "/GetFile.ashx?${1|Guid,Id|}={{ ${2} }}"
+    ]
+  },
+  "get_file_download": {
+    "prefix": "get_file_download",
+    "description": "Rock GetFile.ashx download URL",
+    "body": [
+      "/GetFile.ashx?${1|Guid,Id|}={{ ${2} }}&attachment=true"
+    ]
+  },
+  "Filter RockInstance Config": {
+    "prefix": "RockInstanceConfig",
+    "description": "Return a named configuration setting for the current Rock instance",
+    "body": [
+      "{{ '${1|ApplicationDirectory,PhysicalDirectory,MachineName,IsClustered,SystemDateTime|}' | RockInstanceConfig }}"
+    ]
+  },
+  "Shortcode Accordion": {
+    "prefix": "shortcode:accordion",
+    "description": "Shortcode: Accordion with item",
+    "body": [
+      "{[ accordion ]}",
+      "\t[[ item title:'${2:Small Groups}' ]]",
+      "\t\t$3",
+      "\t[[ enditem ]]",
+      "\t$0",
+      "{[ endaccordion ]}"
+    ]
+  },
+  "Shortcode Accordion Item": {
+    "prefix": "shortcode:accordion-item",
+    "description": "Shortcode: Accordion item",
+    "body": [
+      "[[ item title:'${1:Small Groups}' ]]",
+      "\t$0",
+      "[[ enditem ]]"
+    ]
+  },
+  "Shortcode Chart": {
+    "prefix": "shortcode:chart",
+    "description": "Shortcode: Chart with data item",
+    "body": [
+      "{[ chart type:'${1|bar,line,radar,pie,doughnut,polarArea|}' ]}",
+      "[[ dataitem label:'${2:Small Groups}' value:'${3:45}' ]] [[ enddataitem ]]",
+      "\t$0",
+      "{[ endchart ]}"
+    ]
+  },
+  "Shortcode Chart Item": {
+    "prefix": "scl-chart-item",
+    "description": "Shortcode: Chart data item",
+    "body": [
+      "[[ dataitem label:'${2:Small Groups}' value:'${3:45}' ]] [[ enddataitem ]]"
+    ]
+  },
+  "Shortcode Google Map": {
+    "prefix": "shortcode:map",
+    "description": "Shortcode: Google Map with marker",
+    "body": [
+      "{[ googlemap ${1:height:'${2:600px}'} ${3:width:'${4:100%}'} ${5:showzoom:'${6|true,false|}'} ${7:showstreetview:'${8|true,false|}'} ${9:showfullscreen:'${10|true,false|}'} ${11:showmapttype:'${12|true,false|}'} ${13:scrollwheel:'${14|true,false|}'} ${15:draggable:'${16|true,false|}'} ]}",
+      "[[ marker location:'${17:10451 W Palmeras Dr Sun City, AZ 85373-2000}' ]] [[ endmarker ]]",
+      "\t$0",
+      "{[ endgooglemap ]}"
+    ]
+  },
+  "Shortcode Google Map Static": {
+    "prefix": "shortcode:mapstatic",
+    "description": "Shortcode: Google Static Map",
+    "body": [
+      "{[ googlestaticmap center:'${1:10451 W Palmeras Dr Sun City, AZ 85373-2000}' zoom:'${2:12}' ]}",
+      "{[ endgooglestaticmap ]}"
+    ]
+  },
+  "Shortcode Google Map Static Multi": {
+    "prefix": "scl-mapstatic-multi",
+    "description": "Shortcode: Google Static Map with markers",
+    "body": [
+      "{[ googlestaticmap ]}",
+      "[[ marker location:'${1:1 Cardinals Dr, Glendale, AZ 85305}' ]] [[ endmarker ]]$0",
+      "{[ endgooglestaticmap ]}"
+    ]
+  },
+  "Shortcode Map Marker": {
+    "prefix": "scl-mapmarker",
+    "description": "Shortcode: Map marker",
+    "body": [
+      "[[ marker location:'${1:1 Cardinals Dr, Glendale, AZ 85305}' ]] [[ endmarker ]]"
+    ]
+  },
+  "Shortcode Panel": {
+    "prefix": "shortcode:panel",
+    "description": "Shortcode: Panel with title and icon",
+    "body": [
+      "{[ panel  title:'${1:panel title}' icon:'${2:fa fa-star}' ]}",
+      "\t$0",
+      "{[ endpanel ]}"
+    ]
+  },
+  "Shortcode Parallax": {
+    "prefix": "shortcode:parallax",
+    "description": "Shortcode: Parallax image section",
+    "body": [
+      "{[ parallax image:'${1:https://...}' contentpadding:'${2:20px}' ]}",
+      "\t$0",
+      "{[ endparallax ]}"
+    ]
+  },
+  "Shortcode Vimeo": {
+    "prefix": "shortcode:vimeo",
+    "description": "Shortcode: Embed Vimeo video",
+    "body": [
+      "{[ vimeo id:'${1:Id}' ]}"
+    ]
+  },
+  "Shortcode Word Cloud": {
+    "prefix": "shortcode:wordcloud",
+    "description": "Shortcode: Word cloud",
+    "body": [
+      "{[ wordcloud ]}",
+      "\t$0",
+      "{[ endwordcloud ]}"
+    ]
+  },
+  "Shortcode YouTube": {
+    "prefix": "shortcode:youtube",
+    "description": "Shortcode: Embed YouTube video",
+    "body": [
+      "{[ youtube id:'${1:Id}' controls:'${2|true,false|}' autoplay:'${3|false,true|}' showinfo:'${4|false,true|}' ]}"
+    ]
+  },
+  "Canonical": {
+    "prefix": "meta:canonical",
+    "description": "Add canonical link to page head",
+    "body": [
+      "{{ ${1:'${2:https://rockrms.com/}'} | AddLinkTagToHead:'rel','canonical' }}"
+    ]
+  },
+  "Publish": {
+    "prefix": "meta:PublishedTime",
+    "description": "Add article published/modified time meta tags",
+    "body": [
+      "{{ ${1:Item.CreatedDateTime} | Date:'yyyy-MM-ddTHH:mm:sszzz' | AddMetaTagToHead:'property','article:published_time' }}",
+      "{{ ${1:Item.ModifiedDateTime} | Date:'yyyy-MM-ddTHH:mm:sszzz' | AddMetaTagToHead:'property','article:modified_time' }}"
+    ]
+  },
+  "title": {
+    "prefix": "meta:title",
+    "description": "Add title meta tags (name + og:title)",
+    "body": [
+      "{{ ${1:'${2:Ted Decker}'} | AddMetaTagToHead:'name','title' }}",
+      "{{ ${1} | AddMetaTagToHead:'property','og:title' }}"
+    ]
+  },
+  "author": {
+    "prefix": "meta:author",
+    "description": "Add author meta tag",
+    "body": [
+      "{{ ${1:'${2:Ted Decker}'} | AddMetaTagToHead:'property','author' }}"
+    ]
+  },
+  "ogurl": {
+    "prefix": "meta:ogUrl",
+    "description": "Add og:url meta tag",
+    "body": [
+      "{{ ${1:'${2:https://rockrms.com/}'} | AddMetaTagToHead:'property','og:url' }}"
+    ]
+  },
+  "ogdescription": {
+    "prefix": "meta:ogDesc",
+    "description": "Add og:description meta tag",
+    "body": [
+      "{{ ${1:'${2:Description}'} | AddMetaTagToHead:'property','og:description' }}"
+    ]
+  }
+}

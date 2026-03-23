@@ -1,0 +1,33 @@
+{
+  "grammars": [
+    {
+      "name": "lava",
+      "camelCase": false,
+      "scope": "text.html.lava",
+      "path": ".",
+      "file-types": ["lava"],
+      "injection-regex": "^lava$",
+      "highlights": "queries/highlights.scm",
+      "injections": "queries/injections.scm",
+      "external-files": ["src/scanner.c"]
+    }
+  ],
+  "metadata": {
+    "version": "0.0.1",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for RockRMS Lava template language",
+    "authors": [
+      {
+        "name": "Triumph Tech"
+      }
+    ],
+    "links": {
+      "repository": "https://github.com/Triumph-Tech/tree-sitter-lava"
+    }
+  },
+  "bindings": {
+    "c": true,
+    "node": true,
+    "rust": true
+  }
+}

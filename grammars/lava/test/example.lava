@@ -1,0 +1,35 @@
+<div class="container">
+  {% if CurrentPerson %}
+    <h1>Hello, {{ CurrentPerson.NickName | Upcase }}!</h1>
+    {% for item in Items %}
+      <p>{{ item.Title | Truncate }}</p>
+    {% endfor %}
+  {% else %}
+    <p>Welcome, guest.</p>
+  {% endif %}
+
+  {% comment %}This is hidden{% endcomment %}
+
+  //- This is a line comment
+
+  {% assign greeting = 'Hello World' %}
+  {{ greeting | Upcase }}
+
+  {% person where:'LastName == "Decker"' limit:'10' %}
+    <p>{{ Person.NickName }}</p>
+  {% endperson %}
+
+  {[ parallax image:'hero.jpg' contentpadding:'20px' ]}
+    <h2>Hero Section</h2>
+  {[ endparallax ]}
+
+  [[ item title:'Small Groups' ]]
+    <p>Content here</p>
+  [[ enditem ]]
+
+  {% javascript %}
+    console.log('hello from lava');
+  {% endjavascript %}
+
+  {{ 'Now' | Date:'yyyy-MM-dd' }}
+</div>

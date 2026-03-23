@@ -1,0 +1,9 @@
+name = "Lava"
+grammar = "lava"
+path_suffixes = ["lava"]
+block_comment = ["{% comment %}", "{% endcomment %}"]
+tab_size = 4
+soft_wrap = "preferred_line_length"
+
+# Bracket pairs are handled by brackets.scm
+# Indentation rules are handled by indents.scm
